@@ -13,7 +13,7 @@ import FirebaseDatabase
 class LoginViewController: UIViewController, UITextFieldDelegate {
 
     //MARK: Properties
-    var ref: DatabaseReference!
+    var firbaseDbRef: DatabaseReference = Database.database().reference()//(fromURL: "https://letschat-4d246.firebaseio.com/")
     
     let inputContainerView: UIView = {
         let view = UIView()
@@ -99,8 +99,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
-        ref = Database.database().reference()
-        ref.child("users").setValue(["username": "NIRAV"])
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -134,10 +132,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
                 return
             }
             
+            guard let uid = result?.user.uid else {
+                return
+            }
+            
             //Successful register
-            self.ref = Database.database().reference()//(fromURL: "https://letschat-4d246.firebaseio.com/")
+            let userRef = self.firbaseDbRef.child("users").child(uid)
             let value = ["name" : name, "email" : email]
-            self.ref.child("user").updateChildValues(value, withCompletionBlock: { (error, dbRef) in
+            userRef.updateChildValues(value, withCompletionBlock: { (error, dbRef) in
                 if let error = error {
                     print("Some error occur", error)
                     return
