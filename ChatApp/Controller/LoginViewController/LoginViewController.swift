@@ -13,6 +13,8 @@ import FirebaseDatabase
 class LoginViewController: UIViewController, UITextFieldDelegate {
 
     //MARK: Properties
+    weak var messageViewController: HomeViewController?
+    
     var firbaseDbRef: DatabaseReference = Database.database().reference()//(fromURL: "https://letschat-4d246.firebaseio.com/")
     
     let inputContainerView: UIView = {
@@ -74,11 +76,13 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         return view
     }()
     
-    let profileImgView: UIImageView = {
+    lazy var profileImgView: UIImageView = {
         let imgView = UIImageView()
         imgView.image = #imageLiteral(resourceName: "angry")
         imgView.contentMode = .scaleAspectFill
         imgView.translatesAutoresizingMaskIntoConstraints = false
+        imgView.isUserInteractionEnabled = true
+        imgView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleProfileImageTap)))
         return imgView
     }()
     
@@ -131,58 +135,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     }
     
     
-    //MARK: Action
-    @objc func handleSegmentChange() {
-        let currentIndex = loginRegisterSegment.selectedSegmentIndex
-        let isLoginSelected = (currentIndex == 0)
-        
-        //Change label text
-        let currentTitleString = loginRegisterSegment.titleForSegment(at: currentIndex)
-        LoginRegisterButton.setTitle(currentTitleString, for: .normal)
-        
-        //Set height of inputcontainer view
-        inputContainerHeightAnchor.constant = isLoginSelected ? 100 : 150
-        
-        //Hide name textfield
-        nameTextHeightAnchor.isActive = false
-        nameTextHeightAnchor = nameTextField.heightAnchor.constraint(equalTo: inputContainerView.heightAnchor, multiplier: isLoginSelected ? 0 : 1/3)
-        nameTextHeightAnchor.isActive = true
-        
-        //Change height of email field
-        emailTextHeightAnchor.isActive = false
-        emailTextHeightAnchor = emailTextField.heightAnchor.constraint(equalTo: inputContainerView.heightAnchor, multiplier: isLoginSelected ? 1/2 : 1/3)
-        emailTextHeightAnchor.isActive = true
-        
-        //change height of password field
-        pwdTextHeightAnchor.isActive = false
-        pwdTextHeightAnchor = passwordTextField.heightAnchor.constraint(equalTo: inputContainerView.heightAnchor, multiplier: isLoginSelected ? 1/2 : 1/3)
-        pwdTextHeightAnchor.isActive = true
-        
-    }
-    
-    @objc func handleLoginRegister() {
-
-        if loginRegisterSegment.selectedSegmentIndex == 0 {
-            handleLogin()
-        } else {
-            handleRegister()
-        }
-    }
-    
-    
-    @objc func keyboardShow (notification: Notification) {
-//        if let keyboardSize = (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-//            self.scrollContentView.heightAnchor.constraint(equalToConstant: 1000).isActive = true
-//        }
-    }
-    
-    @objc func keyboardHide() {
-//        UIView.animate(withDuration: 0.37, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-//            self.scrollContentView.frame = CGRect(x: 0, y: 0, width: self.view.frame.width, height: self.view.frame.height)
-//        }, completion: nil)
-    }
-    
-    
     //MARK: Private
     private func setupView() {
         view.backgroundColor = Theme.loginBgColor
@@ -220,51 +172,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIKeyboardDidHide, object: nil)
     }
     
-    private func handleLogin() {
-        
-        guard let email = emailTextField.text, let password = passwordTextField.text else {
-            print("form is not completed")
-            return
-        }
-        Auth.auth().signIn(withEmail: email, password: password) { (resutl, error) in
-            if let error = error {
-                print("Some error occur", error)
-                return
-            }
-            self.dismiss(animated: true, completion: nil)
-        }
-    }
     
-    private func handleRegister() {
-        
-        guard let email = emailTextField.text, let password = passwordTextField.text, let name = nameTextField.text else {
-            print("form is not completed")
-            return
-        }
-        
-        Auth.auth().createUser(withEmail: email, password: password) { (result, error) in
-            if let error = error {
-                print("Some error occur", error)
-                return
-            }
-            
-            guard let uid = result?.user.uid else { return }
-            
-            //Successful register
-            let userRef = self.firbaseDbRef.child("users").child(uid)
-            let value = ["name" : name, "email" : email]
-            userRef.updateChildValues(value, withCompletionBlock: { (error, dbRef) in
-                if let error = error {
-                    print("Some error occur", error)
-                    return
-                }
-                
-                print("Save \(name) into firebase db")
-                self.dismiss(animated: true, completion: nil)
-                
-            })
-        }
-    }
     
     //MARK: TextField delegate
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

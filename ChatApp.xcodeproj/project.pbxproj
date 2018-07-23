@@ -11,11 +11,17 @@
 		57B5A8D3210053B900373695 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B5A8D2210053B900373695 /* AppDelegate.swift */; };
 		57B5A8DA210053DA00373695 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 57B5A8D9210053DA00373695 /* Assets.xcassets */; };
 		57B5A8DD210053DA00373695 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 57B5A8DB210053DA00373695 /* LaunchScreen.storyboard */; };
-		57B5A8E62100586600373695 /* ChatTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B5A8E52100586600373695 /* ChatTableViewController.swift */; };
+		57B5A8E62100586600373695 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B5A8E52100586600373695 /* HomeViewController.swift */; };
 		57B5A8E82100595500373695 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B5A8E72100595500373695 /* LoginViewController.swift */; };
 		57B5A8EB210059AB00373695 /* UIColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B5A8EA210059AB00373695 /* UIColor.swift */; };
 		57B5A8EE21005A4900373695 /* Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57B5A8ED21005A4900373695 /* Theme.swift */; };
 		57B5A8F021008F9100373695 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 57B5A8EF21008F9100373695 /* GoogleService-Info.plist */; };
+		57C4959B2105A54C00870A46 /* NewMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C4959A2105A54B00870A46 /* NewMessageViewController.swift */; };
+		57C4959E2105A5B300870A46 /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C4959D2105A5B300870A46 /* BaseTableViewController.swift */; };
+		57C495A12105A88E00870A46 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C495A02105A88E00870A46 /* User.swift */; };
+		57C495A42105B50300870A46 /* LoginViewController+handler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C495A32105B50300870A46 /* LoginViewController+handler.swift */; };
+		57C495A62105D67900870A46 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C495A52105D67900870A46 /* UIImageView.swift */; };
+		57C495A821060C4400870A46 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 57C495A721060C4400870A46 /* ChatViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,11 +31,17 @@
 		57B5A8D9210053DA00373695 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		57B5A8DC210053DA00373695 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		57B5A8DE210053DA00373695 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		57B5A8E52100586600373695 /* ChatTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatTableViewController.swift; sourceTree = "<group>"; };
+		57B5A8E52100586600373695 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		57B5A8E72100595500373695 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		57B5A8EA210059AB00373695 /* UIColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColor.swift; sourceTree = "<group>"; };
 		57B5A8ED21005A4900373695 /* Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Theme.swift; sourceTree = "<group>"; };
 		57B5A8EF21008F9100373695 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		57C4959A2105A54B00870A46 /* NewMessageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewMessageViewController.swift; sourceTree = "<group>"; };
+		57C4959D2105A5B300870A46 /* BaseTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BaseTableViewController.swift; path = ChatApp/Controller/BaseTableViewController.swift; sourceTree = SOURCE_ROOT; };
+		57C495A02105A88E00870A46 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		57C495A32105B50300870A46 /* LoginViewController+handler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LoginViewController+handler.swift"; sourceTree = "<group>"; };
+		57C495A52105D67900870A46 /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
+		57C495A721060C4400870A46 /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		6EBC50FF0203474532F23072 /* Pods-ChatApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatApp.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ChatApp/Pods-ChatApp.debug.xcconfig"; sourceTree = "<group>"; };
 		C23E7F38DBC05359DCE7AD2D /* Pods-ChatApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ChatApp.release.xcconfig"; path = "Pods/Target Support Files/Pods-ChatApp/Pods-ChatApp.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -67,6 +79,7 @@
 		57B5A8D1210053B900373695 /* ChatApp */ = {
 			isa = PBXGroup;
 			children = (
+				57C4959F2105A87500870A46 /* Model */,
 				57B5A8EC21005A3E00373695 /* Theme */,
 				57B5A8E92100598E00373695 /* Extension */,
 				57B5A8E42100583200373695 /* Controller */,
@@ -82,8 +95,11 @@
 		57B5A8E42100583200373695 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				57B5A8E52100586600373695 /* ChatTableViewController.swift */,
-				57B5A8E72100595500373695 /* LoginViewController.swift */,
+				57C495A22105B4DF00870A46 /* LoginViewController */,
+				57C4959C2105A59600870A46 /* Base */,
+				57B5A8E52100586600373695 /* HomeViewController.swift */,
+				57C4959A2105A54B00870A46 /* NewMessageViewController.swift */,
+				57C495A721060C4400870A46 /* ChatViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -92,6 +108,7 @@
 			isa = PBXGroup;
 			children = (
 				57B5A8EA210059AB00373695 /* UIColor.swift */,
+				57C495A52105D67900870A46 /* UIImageView.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -102,6 +119,31 @@
 				57B5A8ED21005A4900373695 /* Theme.swift */,
 			);
 			path = Theme;
+			sourceTree = "<group>";
+		};
+		57C4959C2105A59600870A46 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				57C4959D2105A5B300870A46 /* BaseTableViewController.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		57C4959F2105A87500870A46 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				57C495A02105A88E00870A46 /* User.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		57C495A22105B4DF00870A46 /* LoginViewController */ = {
+			isa = PBXGroup;
+			children = (
+				57B5A8E72100595500373695 /* LoginViewController.swift */,
+				57C495A32105B50300870A46 /* LoginViewController+handler.swift */,
+			);
+			path = LoginViewController;
 			sourceTree = "<group>";
 		};
 		6AA237E35F1ABECAAAD9D35F /* Pods */ = {
@@ -239,11 +281,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57C495A42105B50300870A46 /* LoginViewController+handler.swift in Sources */,
 				57B5A8E82100595500373695 /* LoginViewController.swift in Sources */,
+				57C495A821060C4400870A46 /* ChatViewController.swift in Sources */,
+				57C4959B2105A54C00870A46 /* NewMessageViewController.swift in Sources */,
 				57B5A8EB210059AB00373695 /* UIColor.swift in Sources */,
+				57C4959E2105A5B300870A46 /* BaseTableViewController.swift in Sources */,
+				57C495A12105A88E00870A46 /* User.swift in Sources */,
+				57C495A62105D67900870A46 /* UIImageView.swift in Sources */,
 				57B5A8EE21005A4900373695 /* Theme.swift in Sources */,
 				57B5A8D3210053B900373695 /* AppDelegate.swift in Sources */,
-				57B5A8E62100586600373695 /* ChatTableViewController.swift in Sources */,
+				57B5A8E62100586600373695 /* HomeViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -384,7 +432,10 @@
 				DEVELOPMENT_TEAM = Z9YNW37HDV;
 				INFOPLIST_FILE = ChatApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.viralchauhan.LetsChat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "0b3822ea-f7fe-41df-a8c8-88fe262088b4";
@@ -403,7 +454,10 @@
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = ChatApp/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.viralchauhan.LetsChat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
