@@ -7,9 +7,7 @@
 //
 import UIKit
 
-class BaseCell<U> : UITableViewCell {
-    var item: U!
-}
+
 
 class BaseTableViewController<T: BaseCell<U>, U> : UITableViewController {
     
@@ -31,6 +29,10 @@ class BaseTableViewController<T: BaseCell<U>, U> : UITableViewController {
         return cell
     }
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 72
+    }
+    
 }
 
 
@@ -41,6 +43,7 @@ struct Person {
 
 
 class PersonCell: BaseCell<Person> {
+    
     override var item: Person! {
         didSet {
             textLabel?.text = item.firstname + " " + item.lastname

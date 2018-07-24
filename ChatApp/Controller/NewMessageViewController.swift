@@ -9,9 +9,15 @@
 import UIKit
 import FirebaseDatabase
 
-class NewMessageViewController: BaseTableViewController<NewChatCell, User> {
+class NewMessageViewController: BaseTableViewController<UserCell, User> {
 
-    var firbaseDbRef: DatabaseReference = Database.database().reference()//(fromURL: "https://letschat-4d246.firebaseio.com/")
+    private var firbaseDbRef: DatabaseReference! = Database.database().reference()//(fromURL: "https://letschat-4d246.firebaseio.com/")
+    
+    weak var homeViewController: HomeViewController?
+    
+    deinit {
+        print("NewMessageViewController Deinit-----")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,8 +34,10 @@ class NewMessageViewController: BaseTableViewController<NewChatCell, User> {
             
             if let dictionary = snapshot.value as? [String:Any] {
                 let user = User(with: dictionary)
+                user.id = snapshot.key
                 self.item.append(user)
                 DispatchQueue.main.async {
+                    print("NewMessageViewController Reload Table")
                     self.tableView.reloadData()
                 }
             }
@@ -41,52 +49,15 @@ class NewMessageViewController: BaseTableViewController<NewChatCell, User> {
         dismiss(animated: true, completion: nil)
     }
     
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 72
-    }
-}
-
-
-class NewChatCell: BaseCell<User> {
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        
-        textLabel?.frame = CGRect(x: 64, y: textLabel!.frame.origin.y-2, width: textLabel!.frame.width, height: textLabel!.frame.height)
-        detailTextLabel?.frame = CGRect(x: 64, y: detailTextLabel!.frame.origin.y+2, width: detailTextLabel!.frame.width, height: detailTextLabel!.frame.height)
-    }
-    
-    let profileImgView: UIImageView = {
-        let img = UIImageView()
-        img.translatesAutoresizingMaskIntoConstraints = false
-        img.layer.cornerRadius = 24
-        img.layer.masksToBounds = true
-        img.contentMode = .scaleAspectFill
-        return img
-    }()
-    
-    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
-        
-        addSubview(profileImgView)
-        profileImgView.leftAnchor.constraint(equalTo: self.leftAnchor, constant: 8).isActive = true
-        profileImgView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        profileImgView.widthAnchor.constraint(equalToConstant: 48).isActive = true
-        profileImgView.heightAnchor.constraint(equalToConstant: 48).isActive = true
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
-    override var item: User! {
-        didSet {
-            textLabel?.text = item.name
-            detailTextLabel?.text = item.email
-            
-            if let profileImgUrl = item.profileImageUrl {
-                profileImgView.saveImageIntoCacheDisplayOnImageView(imageUrl: profileImgUrl)
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        dismiss(animated: true) {
+            let user = self.item[indexPath.row]
+            if let homeVC = self.homeViewController {
+                homeVC.showChatViewControllerWith(user: user)
+                self.homeViewController = nil
             }
         }
     }
+    
 }

@@ -11,9 +11,10 @@ import Firebase
 import FirebaseDatabase
 import FirebaseAuth
 
-class HomeViewController: UITableViewController {
+class HomeViewController: BaseTableViewController<MessageCell, Message> {
 
     var firbaseDbRef: DatabaseReference = Database.database().reference()
+    private var messsageDictionary = [String:Message]()
     
     //MARK: Lifecycle
     override func viewDidLoad() {
@@ -28,6 +29,7 @@ class HomeViewController: UITableViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(composeNewMessage))
         
         checkIfUserLoggedIn()
+        observerMessages()
     }
     
     fileprivate func checkIfUserLoggedIn() {
@@ -38,6 +40,33 @@ class HomeViewController: UITableViewController {
         }
     }
     
+    private func observerMessages() {
+        
+        firbaseDbRef.child("message").observe(.childAdded, with: { (snapshot) in
+            print(snapshot)
+            if let dictionary = snapshot.value as? [String:Any] {
+                if let message = Message(with: dictionary) {
+//                    self.item.append(message)
+                    if let toId = message.toId {
+                        self.messsageDictionary[toId] = message
+                        self.item = Array(self.messsageDictionary.values)
+                        
+                        self.item.sort(by: { (m1, m2) -> Bool in
+                            return m1.timestamp!.intValue > m2.timestamp!.intValue
+                        })
+                    }
+                }
+            }
+            
+            DispatchQueue.main.async {
+                print("Reload Called")
+                self.tableView.reloadData()
+            }
+            
+        }, withCancel: { (error) in 
+            print("WithCencel call")
+        })
+    }
     
     
     //Mark: Selectors
@@ -54,10 +83,13 @@ class HomeViewController: UITableViewController {
     }
     
     @objc func composeNewMessage() {
-        let nav = UINavigationController(rootViewController: NewMessageViewController())
+        let newMessageVc = NewMessageViewController()
+        newMessageVc.homeViewController = self
+        let nav = UINavigationController(rootViewController: newMessageVc)
         present(nav, animated: true, completion: nil)
     }
 
+    
     
     //MARK: Public
     
@@ -66,13 +98,11 @@ class HomeViewController: UITableViewController {
             return
         }
         
-        var handle: UInt = 0
-        handle = firbaseDbRef.child("users").child(uid).observe(.value) { (snapshot) in
+        firbaseDbRef.child("users").child(uid).observeSingleEvent(of: .value) { (snapshot) in
             print(snapshot)
             if let dictionary = snapshot.value as? [String: AnyObject] {
                 if let name = dictionary["name"] as? String {
                     print("Logged Uesr \(name)")
-                    self.firbaseDbRef.removeObserver(withHandle: handle)
                     
                     DispatchQueue.main.async {
                         let user = User(with: dictionary)
@@ -127,17 +157,15 @@ class HomeViewController: UITableViewController {
         containerView.centerYAnchor.constraint(equalTo: navTitleView.centerYAnchor).isActive = true
         containerView.centerXAnchor.constraint(equalTo: navTitleView.centerXAnchor).isActive = true
         
-        containerView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleProfileIcon)))
         self.navigationItem.titleView = navTitleView
     }
     
     
-    //MARK: Action
-    @objc func handleProfileIcon() {
-        print(123)
+    func showChatViewControllerWith(user: User) {
         let chatVc = ChatViewController(collectionViewLayout: UICollectionViewFlowLayout())
+        chatVc.user = user
         navigationController?.pushViewController(chatVc, animated: true)
     }
     
-    
 }
+
