@@ -46,23 +46,27 @@ class MessageCell: BaseCell<Message> {
                 dateFormatter.dateFormat = "hh:mm:ss a"
                 timeLabel.text = dateFormatter.string(from: date as Date)
             }
+            setupNameAndProfileImage()
             
-            if let toId = item.toId {
-                let ref = Database.database().reference().child("users").child(toId)
-                ref.observeSingleEvent(of: .value) { (snapshot) in
-                    if let dictionary = snapshot.value as? [String: Any] {
-                        let user = User(with: dictionary)
-                        user.id = snapshot.key
-                        
-                        guard let name = user.name else { return }
-                        self.textLabel?.text = name
-                        
-                        guard let profileUrl = user.profileImageUrl  else { return }
-                        self.profileImgView.saveImageIntoCacheDisplayOnImageView(imageUrl: profileUrl)
-                    }
+        }
+    }
+    
+    private func setupNameAndProfileImage() {
+        
+        if let id = item.chatPartnerId() {
+            let ref = Database.database().reference().child("users").child(id)
+            ref.observeSingleEvent(of: .value) { (snapshot) in
+                if let dictionary = snapshot.value as? [String: Any] {
+                    let user = User(with: dictionary)
+                    user.id = snapshot.key
+                    
+                    guard let name = user.name else { return }
+                    self.textLabel?.text = name
+                    
+                    guard let profileUrl = user.profileImageUrl  else { return }
+                    self.profileImgView.saveImageIntoCacheDisplayOnImageView(imageUrl: profileUrl)
                 }
             }
-            
         }
     }
 }

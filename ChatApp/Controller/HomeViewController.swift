@@ -29,7 +29,7 @@ class HomeViewController: BaseTableViewController<MessageCell, Message> {
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .compose, target: self, action: #selector(composeNewMessage))
         
         checkIfUserLoggedIn()
-        observerMessages()
+        
     }
     
     fileprivate func checkIfUserLoggedIn() {
@@ -37,6 +37,37 @@ class HomeViewController: BaseTableViewController<MessageCell, Message> {
             self.perform(#selector(handleLogout), with: nil, afterDelay: 0.1)
         } else {
             displayTitle()
+        }
+    }
+    
+    private func observerUesrMessages() {
+        guard let uid = Auth.auth().currentUser?.uid else { return }
+        let ref = firbaseDbRef.child("user-messages").child(uid)
+        ref.observe(.childAdded) { (snapshot) in
+            let messageId = snapshot.key
+            let messagesRef = self.firbaseDbRef.child("message").child(messageId)
+            
+            messagesRef.observeSingleEvent(of: .value, with: { (snapshot) in
+                if let dictionary = snapshot.value as? [String:Any] {
+                    if let message = Message(with: dictionary) {
+                        //                    self.item.append(message)
+                        if let toId = message.toId {
+                            self.messsageDictionary[toId] = message
+                            self.item = Array(self.messsageDictionary.values)
+                            
+                            self.item.sort(by: { (m1, m2) -> Bool in
+                                return m1.timestamp!.intValue > m2.timestamp!.intValue
+                            })
+                        }
+                    }
+                }
+                
+                DispatchQueue.main.async {
+                    print("Reload Called")
+                    self.tableView.reloadData()
+                }
+                
+            })
         }
     }
     
@@ -58,14 +89,32 @@ class HomeViewController: BaseTableViewController<MessageCell, Message> {
                 }
             }
             
-            DispatchQueue.main.async {
-                print("Reload Called")
-                self.tableView.reloadData()
-            }
+           
             
         }, withCancel: { (error) in 
             print("WithCencel call")
         })
+    }
+    
+    //MARK: TableView delegate
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let selMessage = item[indexPath.row]
+        
+        guard let chatPartnerId = selMessage.chatPartnerId() else {
+            return
+        }
+        
+        let userRef = firbaseDbRef.child("users").child(chatPartnerId)
+        userRef.observeSingleEvent(of: .value) { (snapshot) in
+            guard let dictionary = snapshot.value as? [String:Any] else {
+                return
+            }
+            
+            let user = User(with: dictionary)
+            user.id = chatPartnerId
+            self.showChatViewControllerWith(user: user)
+        }
+        
     }
     
     
@@ -115,6 +164,13 @@ class HomeViewController: BaseTableViewController<MessageCell, Message> {
     
     
     public func setupNavTitleView(user: User) {
+        
+        messsageDictionary.removeAll()
+        item.removeAll()
+        tableView.reloadData()
+        
+        observerUesrMessages()
+        
         let navTitleView = UIView()
         navTitleView.backgroundColor = .red
         navTitleView.frame = CGRect(x: 0, y: 0, width: 100, height: 40)

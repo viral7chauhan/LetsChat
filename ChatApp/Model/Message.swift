@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import FirebaseAuth
 
 class Message {
     var fromId: String?
@@ -21,4 +22,14 @@ class Message {
         text = dictionary["text"] as? String
         timestamp = dictionary["timestamp"] as? NSNumber
      }
+    
+    func chatPartnerId() -> String? {
+        let chatPartnerId:String?
+        if fromId == Auth.auth().currentUser?.uid {
+            chatPartnerId = toId
+        } else {
+            chatPartnerId = fromId
+        }
+        return chatPartnerId
+    }
 }

@@ -11,6 +11,8 @@ import Firebase
 
 class ChatViewController : UICollectionViewController, UITextFieldDelegate {
     
+    let cellId = "chatCellId"
+    
     var user: User? {
         didSet {
             if let username = user?.name {
@@ -41,6 +43,7 @@ class ChatViewController : UICollectionViewController, UITextFieldDelegate {
     
     fileprivate func setupView() {
         collectionView?.backgroundColor = .white
+        collectionView?.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellId)
         setupInputViewComponents()
     }
     
@@ -110,6 +113,9 @@ class ChatViewController : UICollectionViewController, UITextFieldDelegate {
             let userMsgRef = Database.database().reference().child("user-messages").child(fromId)
             let messageId = childRef.key
             userMsgRef.updateChildValues([messageId:1])
+            
+            let receipientUserMsgRef = Database.database().reference().child("user-messages").child(toId)
+            receipientUserMsgRef.updateChildValues([messageId:1])
         }
     }
     
@@ -119,5 +125,18 @@ class ChatViewController : UICollectionViewController, UITextFieldDelegate {
         return true
     }
     
+    
+    //MARK: CollectionView methods
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 5
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath)
+        cell.backgroundColor = .blue
+        return cell
+    }
 }
+
+
 
